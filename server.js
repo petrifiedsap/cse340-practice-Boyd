@@ -106,7 +106,7 @@ app.use((req, res, next) => {
     } else if (12 < currentHour && currentHour < 16) {
         res.locals.greeting = 'Good Afternoon!';
     } else if (16 < currentHour) {
-        res.locals.greeting = 'Good night!';
+        res.locals.greeting = 'Good evening, ah ah ah!';
     } else {
         res.locals.greeting = 'Do you even lift, bro?';
     };
@@ -125,11 +125,34 @@ app.use((req, res, next) => {
     next();
 });
 
+// Global middleware to share query parameters with templates
+app.use((req, res, next) => {
+    // Make req.query available to all templates for debugging and conditional rendering
+    res.locals.queryParams = req.query || {};
+
+    next();
+});
+
+// Route-specific middleware that sets custom headers
+const addDemoHeaders = (req, res, next) => {
+    // Your task: Set custom headers using res.setHeader()
+    res.setHeader('X-Demo-Page', 'true');
+    res.setHeader('X-Middleware-Demo', 'It\'s a Header, not a Concussion');
+
+    next();
+};
 
 //declare routes
 /**
  * Routes
  */
+// Demo page route with header middleware
+app.get('/demo', addDemoHeaders, (req, res) => {
+    res.render('demo', {
+        title: 'Middleware Demo Page'
+    });
+});
+
 app.get('/', (req, res) => {
     const title = 'Welcome Home';
     res.render('home', { title });
