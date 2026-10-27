@@ -14,7 +14,7 @@ console.log(sort);
 
 // Route handler for individual faculty detail pages
 const facultyDetailPage = async (req, res, next) => {
-    const facultySlug = req.params.slugId;
+    const facultySlug = req.params.facultySlug;
     const faculty = await getFacultyBySlug(facultySlug);
 console.log(facultySlug)
 console.log(faculty);

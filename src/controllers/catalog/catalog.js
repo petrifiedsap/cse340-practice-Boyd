@@ -5,7 +5,6 @@ import { getSectionsByCourseSlug } from '../../models/catalog/catalog.js';
 const catalogPage = async (req, res) => {
     // Model functions are async, so we must await them
     const courses = await getAllCourses();
-    console.log(courses[1]);
     res.render('catalog', {
         title: 'Course Catalog',
         courses: courses
@@ -14,8 +13,7 @@ const catalogPage = async (req, res) => {
 
 // Route handler for individual course detail pages
 const courseDetailPage = async (req, res, next) => {
-    const courseSlug = req.params.slugId; 
-    console.log(courseSlug);   
+    const courseSlug = req.params.slugId;  
     // Model functions are async, so we must await them
     const course = await getCourseBySlug(courseSlug);    
     // Our model returns empty object {} when not found, not null

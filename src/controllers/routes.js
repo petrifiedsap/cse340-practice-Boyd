@@ -20,7 +20,7 @@ router.get('/catalog/:slugId', courseDetailPage);
 
 //faculty routes
 router.get('/faculty', facultyListPage);
-router.get('/faculty/:facultyId', facultyDetailPage);
+router.get('/faculty/:facultySlug', facultyDetailPage);
 
 // Demo page with special middleware
 router.get('/demo', addDemoHeaders, demoPage);
