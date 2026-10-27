@@ -6,7 +6,6 @@
     <div class="course-list">
         <% Object.values(courses).forEach(course => { %>
             <div class="course-card">
-                <% console.log(course) %>
                 <h3><a href="/catalog/<%= course.slug %>"><%= course.courseCode %></a></h3>
                 <p class="course-id"><%= course.name %> • <%= course.creditHours %> credits</p>
                 <p class="course-description"><%= course.description %></p>
