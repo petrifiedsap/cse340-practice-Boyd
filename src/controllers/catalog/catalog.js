@@ -5,7 +5,7 @@ import { getSectionsByCourseSlug } from '../../models/catalog/catalog.js';
 const catalogPage = async (req, res) => {
     // Model functions are async, so we must await them
     const courses = await getAllCourses();
-    res.render('catalog', {
+    res.render('catalog/list', {
         title: 'Course Catalog',
         courses: courses
     });
@@ -16,8 +16,6 @@ const courseDetailPage = async (req, res, next) => {
     const courseSlug = req.params.slugId;  
     // Model functions are async, so we must await them
     const course = await getCourseBySlug(courseSlug);
-    console.log('from URL', courseSlug);
-    console.log('course found:', course);    
     // Our model returns empty object {} when not found, not null
     // Check if the object is empty using Object.keys()
     if (Object.keys(course).length === 0) {
@@ -29,11 +27,8 @@ const courseDetailPage = async (req, res, next) => {
     // Get sections (course offerings) separately from the catalog
     // Pass the sortBy parameter directly to the model - PostgreSQL handles the sorting
     const sortBy = req.query.sort || 'time';
-    console.log(sortBy);
     const sections = await getSectionsByCourseSlug(courseSlug, sortBy);
-    console.log('Sections returned:', sections.length);
-    console.log('Section data:', sections);    
-    res.render('course-detail', {
+    res.render('catalog/detail', {
         title: `${course.courseCode} - ${course.name}`,
         course: course,
         sections: sections,

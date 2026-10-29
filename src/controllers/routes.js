@@ -8,6 +8,7 @@ import { addDemoHeaders } from '../middleware/demo/headers.js';
 import { catalogPage, courseDetailPage } from './catalog/catalog.js';
 import { homePage, aboutPage, demoPage, testErrorPage } from './index.js';
 import { facultyListPage, facultyDetailPage } from './faculty/faculty.js';
+import contactRoutes from './forms/contact.js';
 
 // Router middleware
 // Add catalog-specific styles to all catalog routes
@@ -18,6 +19,12 @@ router.use('/catalog', (req, res, next) => {
 
 router.use('/faculty', (req, res, next) => {
     res.addStyle('<link rel="stylesheet" href="/css/faculty.css">');
+    next();
+});
+
+// Add contact-specific styles to all contact routes
+router.use('/contact', (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/contact.css">');
     next();
 });
 
@@ -39,5 +46,8 @@ router.get('/demo', addDemoHeaders, demoPage);
 
 // Route to trigger a test error
 router.get('/test-error', testErrorPage);
+
+// Contact form routes
+router.use('/contact', contactRoutes);
 
 export default router;
