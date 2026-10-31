@@ -23,8 +23,8 @@ const loginValidation = [
  * Display the login form.
  */
 const showLoginForm = (req, res) => {
-    res.render(forms/login/form, {
-        title: 'User Login',   
+    res.render('forms/login/form', {
+        title: 'User Login'   
     });
 };
 
@@ -41,18 +41,17 @@ const processLogin = async (req, res) => {
         return;
     }
 
-    // TODO: Extract email and password from req.body
     const { email, password } = req.body;
     try {
-        const userEmail = await findUserByEmail(email);
-        if (!userEmail) {
+        const user = await findUserByEmail(email);
+        if (!user) {
             console.log('User not found');
             res.redirect('/login');
             return;
         }
 
-        const userPassword = await verifyPassword(password, user.password);
-        if (exists) {
+        const correct = await verifyPassword(password, user.password);
+        if (!correct) {
             console.log('Invalid Password');
             res.redirect('/login');
             return;
@@ -61,12 +60,12 @@ const processLogin = async (req, res) => {
         // SECURITY: Remove password from user object before storing in session
         delete user.password;
 
-        // TODO: Store user in session: req.session.user = user
-        // TODO: Redirect to /dashboard
+        req.session.user = user;
+        res.redirect('/dashboard');
     } catch (error) {
         // Model functions do not catch errors, so handle them here
-        // TODO: Log error to console
-        // TODO: Redirect to /login
+        console.error('Error logging in', error);
+        res.redirect('/login');
     }
 };
 
@@ -130,8 +129,11 @@ const showDashboard = (req, res) => {
         delete sessionData.user.password;
     }
 
-    // TODO: Render the dashboard view (dashboard)
-    // TODO: Pass title: 'Dashboard', user, and sessionData to template
+    res.render('/dashboard', {
+        title: 'Dashboard',
+        user,
+        sessionData
+    });
 };
 
 // Routes

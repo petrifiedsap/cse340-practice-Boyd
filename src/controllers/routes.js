@@ -1,8 +1,3 @@
-import { Router } from 'express';
-
-// Create a new router instance
-const router = Router();
-
 // import statements from controllers and middleware
 import { addDemoHeaders } from '../middleware/demo/headers.js';
 import { catalogPage, courseDetailPage } from './catalog/catalog.js';
@@ -10,6 +5,15 @@ import { homePage, aboutPage, demoPage, testErrorPage } from './index.js';
 import { facultyListPage, facultyDetailPage } from './faculty/faculty.js';
 import contactRoutes from './forms/contact.js';
 import registrationRoutes from './forms/registration.js';
+import loginRoutes from './forms/login.js';
+import { processLogout, showDashboard } from './forms/login.js';
+import { requireLogin } from '../middleware/auth.js';
+
+
+import { Router } from 'express';
+
+// Create a new router instance
+const router = Router();
 
 // Router middleware
 // Add catalog-specific styles to all catalog routes
@@ -64,5 +68,12 @@ router.use('/contact', contactRoutes);
 
 // Registration routes
 router.use('/register', registrationRoutes);
+
+// Login routes (form and submission)
+router.use('/login', loginRoutes);
+
+// Authentication-related routes at root level
+router.get('/logout', processLogout);
+router.get('/dashboard', requireLogin, showDashboard);
 
 export default router;
