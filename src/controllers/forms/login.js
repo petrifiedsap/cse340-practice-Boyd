@@ -129,7 +129,7 @@ const showDashboard = (req, res) => {
         delete sessionData.user.password;
     }
 
-    res.render('/dashboard', {
+    res.render('dashboard', {
         title: 'Dashboard',
         user,
         sessionData
