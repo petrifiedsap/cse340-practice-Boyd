@@ -24,7 +24,9 @@ const handleContactSubmission = async (req, res) => {
 
     if (!errors.isEmpty()) {
         // Log validation errors for developer debugging
-        console.error('Validation errors:', errors.array());
+        errors.array().forEach(error => { 
+            req.flash('error', error.msg);
+        });
         // Redirect back to form without saving
         return res.redirect('/contact');
     }
@@ -35,11 +37,12 @@ const handleContactSubmission = async (req, res) => {
     try {
         // Save to database
         await createContactForm(subject, message);
-        console.log('Contact form submitted successfully');
+        req.flash('success', 'Thanks for dabbing us up, we promise we won\'t ghost you!');
         // Redirect to responses page on success
-        res.redirect('/contact/responses');
+        res.redirect('/contact');
     } catch (error) {
         console.error('Error saving contact form:', error);
+        req.flash('error', 'No dice, bro, try again, no cap this time!');
         res.redirect('/contact');
     }
 };

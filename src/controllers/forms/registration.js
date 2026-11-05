@@ -50,7 +50,9 @@ const processRegistration = async (req, res) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        console.error('Validation errors:', errors.array());
+        errors.array().forEach(error => {
+            req.flash('error', error.msg);
+        });
         res.redirect('/register');
         return;
     }
@@ -64,7 +66,7 @@ const processRegistration = async (req, res) => {
         // TODO: Call emailExists(email) and store the result in a variable
 
         if (exists) {
-            console.log('Email already registered');
+            req.flash('warning', 'We already have one of you here!');
             res.redirect('/register');
             return;
         }
@@ -76,13 +78,14 @@ const processRegistration = async (req, res) => {
         // Save user to database with hashed password
         await saveUser(name, email, hashedPassword);
         // Log success message to console
-        console.log('Registration form submitted successfully');
+        req.flash('success', 'Registration form submitted successfully');
         // redirect to show success
-        res.redirect('/register/list');
+        res.redirect('/login');
         // NOTE: Later when we add authentication, we'll change this to require login first
     } catch (error) {
         //Log error to console
         console.error('Error saving registration form:', error);
+        req.flash('error', 'Erroe saving user registration, better luck next time');
         res.redirect('/contact');
         return;
     }
