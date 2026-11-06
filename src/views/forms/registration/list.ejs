@@ -15,6 +15,15 @@
                 console.log(currentUser.roleName);
                 const canDelete = currentUser && currentUser.roleName === 'admin' && currentUser.id !== listUser.id;
                 console.log(canDelete, canEdit);
+
+                // this is what AI suggested
+                // const currentUser = typeof user !== 'undefined' ? user : null;
+                // const userRole = currentUser ? (currentUser.roleName || currentUser.roleName || currentUser.account_type) : null;
+                // const isAdmin = userRole === 'admin' || userRole === 'Admin';
+                // const isSelf = currentUser && currentUser.id === listUser.id;
+
+                // const canEdit = currentUser && (isSelf || isAdmin);
+                // const canDelete = currentUser && isAdmin && !isSelf;
             %>
             <div class="user-card">
                 <h3><%= listUser.name %></h3>
